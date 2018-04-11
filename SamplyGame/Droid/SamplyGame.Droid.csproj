@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -18,6 +18,7 @@
     <AndroidManifest>Properties\AndroidManifest.xml</AndroidManifest>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <AndroidUseSharedRuntime>False</AndroidUseSharedRuntime>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>True</DebugSymbols>
@@ -28,12 +29,8 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AndroidLinkMode>None</AndroidLinkMode>
-    <AndroidUseSharedRuntime>False</AndroidUseSharedRuntime>
     <EmbedAssembliesIntoApk>True</EmbedAssembliesIntoApk>
-    <BundleAssemblies>False</BundleAssemblies>
-    <AndroidCreatePackagePerAbi>False</AndroidCreatePackagePerAbi>
     <Debugger>Xamarin</Debugger>
-    <AndroidEnableMultiDex>False</AndroidEnableMultiDex>
     <AndroidSupportedAbis>armeabi,armeabi-v7a,x86,x86_64,arm64-v8a</AndroidSupportedAbis>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -43,7 +40,6 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <AndroidUseSharedRuntime>False</AndroidUseSharedRuntime>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Mono.Android" />
@@ -53,12 +49,18 @@
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Xml" />
     <Reference Include="Urho, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\UrhoSharp.1.8.71\lib\MonoAndroid\Urho.dll</HintPath>
+      <HintPath>..\packages\UrhoSharp.1.5.2\lib\MonoAndroid\Urho.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Urho.Droid.SdlBinding, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\UrhoSharp.1.8.71\lib\MonoAndroid\Urho.Droid.SdlBinding.dll</HintPath>
+      <HintPath>..\packages\UrhoSharp.1.5.2\lib\MonoAndroid\Urho.Droid.SdlBinding.dll</HintPath>
       <Private>True</Private>
+    </Reference>
+    <Reference Include="DeviceMotion.Plugin.Abstractions">
+      <HintPath>..\packages\Xam.Plugin.DeviceMotion.1.1.2\lib\MonoAndroid10\DeviceMotion.Plugin.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="DeviceMotion.Plugin">
+      <HintPath>..\packages\Xam.Plugin.DeviceMotion.1.1.2\lib\MonoAndroid10\DeviceMotion.Plugin.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -228,11 +230,11 @@
   <ItemGroup>
     <Content Include="UrhoSharpReadme.txt" />
   </ItemGroup>
-  <Import Project="..\packages\UrhoSharp.1.8.71\build\MonoAndroid\UrhoSharp.targets" Condition="Exists('..\packages\UrhoSharp.1.8.71\build\MonoAndroid\UrhoSharp.targets')" />
+  <Import Project="..\packages\UrhoSharp.1.5.2\build\MonoAndroid\UrhoSharp.targets" Condition="Exists('..\packages\UrhoSharp.1.5.2\build\MonoAndroid\UrhoSharp.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\packages\UrhoSharp.1.8.71\build\MonoAndroid\UrhoSharp.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\UrhoSharp.1.8.71\build\MonoAndroid\UrhoSharp.targets'))" />
+    <Error Condition="!Exists('..\packages\UrhoSharp.1.5.2\build\MonoAndroid\UrhoSharp.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\UrhoSharp.1.5.2\build\MonoAndroid\UrhoSharp.targets'))" />
   </Target>
 </Project>
