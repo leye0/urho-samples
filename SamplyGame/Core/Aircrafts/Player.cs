@@ -15,7 +15,7 @@ namespace SamplyGame
 
 		protected override Vector3 CollisionShapeSize => new Vector3(3.1f, 1.2f, 1.2f); // extend default shape to get collisions by wings too
 
-		public override int MaxHealth => 40;
+		public override int MaxHealth => 40000;
 
 		protected override async void Init()
 		{
@@ -98,7 +98,8 @@ namespace SamplyGame
 
 			if (hasInput)
 			{
-				Vector3 destWorldPos = ((SamplyGame)Application).Viewport.ScreenToWorldPoint(positionX, positionY, 10);
+                // TODO: Warning - hardcoded viewport left for position computing
+                Vector3 destWorldPos = ((SamplyGame)Application).ViewportLeft.ScreenToWorldPoint(positionX, positionY, 10);
 				destWorldPos.Z = 0;
 				aircraft.Translate(destWorldPos - aircraft.WorldPosition, TransformSpace.World);
 				foreach (var weapon in Node.Components.OfType<Weapon>())

@@ -54,7 +54,7 @@ namespace SamplyGame
 			shape.SetBox(CollisionShapeSize, Vector3.Zero, Quaternion.Identity);
 
 			Init();
-			node.SubscribeToNodeCollisionStart(OnCollided);
+            node.NodeCollisionStart += OnCollided;
 			return liveTask.Task;
 		}
 

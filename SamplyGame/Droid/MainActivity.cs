@@ -4,13 +4,16 @@ using Android.Widget;
 using Android.OS;
 using Android.Views;
 using Urho.Droid;
+using DeviceMotion.Plugin;
+using DeviceMotion.Plugin.Abstractions;
+using System;
 
 namespace SamplyGame.Droid
 {
 	[Activity(Label = "SamplyGame", MainLauncher = true, 
 		Icon = "@drawable/icon", Theme = "@android:style/Theme.NoTitleBar.Fullscreen",
 		ConfigurationChanges = ConfigChanges.KeyboardHidden | ConfigChanges.Orientation,
-		ScreenOrientation = ScreenOrientation.Portrait)]
+        ScreenOrientation = ScreenOrientation.Landscape)]
 	public class MainActivity : Activity
 	{
 		protected override async void OnCreate(Bundle bundle)
@@ -20,6 +23,20 @@ namespace SamplyGame.Droid
 			var surface = UrhoSurface.CreateSurface(this);// (this, , true);
 			mLayout.AddView(surface);
 			SetContentView(mLayout);
+
+            CrossDeviceMotion.Current.Start(MotionSensorType.Accelerometer, MotionSensorDelay.Game);                                         
+            CrossDeviceMotion.Current.SensorValueChanged += (s, a) => {
+                switch (a.SensorType)
+                {
+                    case MotionSensorType.Accelerometer:
+                        Console.WriteLine("A: {0},{1},{2}", ((MotionVector)a.Value).X, ((MotionVector)a.Value).Y, ((MotionVector)a.Value).Z);
+                        break;
+                    case MotionSensorType.Compass:
+                        Console.WriteLine("H: {0}", a.Value);
+                        break;
+                }
+            };
+
 			var app = await surface.Show<SamplyGame>(new Urho.ApplicationOptions("Data"));
 		}
 

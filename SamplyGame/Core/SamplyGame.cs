@@ -19,10 +19,12 @@ namespace SamplyGame
 
 		public Player Player { get; private set; }
 
-		public Viewport Viewport { get; private set; }
+        public Viewport ViewportLeft { get; private set; }
+        public Viewport ViewportRight { get; private set; }
+
 
 		[Preserve]
-		public SamplyGame() : base(new ApplicationOptions(assetsFolder: "Data") { Height = 1024, Width = 576, Orientation = ApplicationOptions.OrientationType.Portrait}) { }
+        public SamplyGame() : base(new ApplicationOptions(assetsFolder: "Data") { Width = 1024, Height = 576, Orientation = ApplicationOptions.OrientationType.Landscape}) { }
 
 		[Preserve]
 		public SamplyGame(ApplicationOptions opts) : base(opts) { }
@@ -73,23 +75,42 @@ namespace SamplyGame
 			physics.SetGravity(new Vector3(0, 0, 0));
 
 			// Camera
-			var cameraNode = scene.CreateChild();
-			cameraNode.Position = (new Vector3(0.0f, 0.0f, -10.0f));
-			cameraNode.CreateComponent<Camera>();
-			Viewport = new Viewport(Context, scene, cameraNode.GetComponent<Camera>(), null);
+            var cameraNodeLeft = scene.CreateChild();
+			//cameraNode.Position = (new Vector3(0.0f, 0.0f, -10.0f)); // Point of view for our aircraft
+            cameraNodeLeft.Position = (new Vector3(-0.2f, 0.0f, -8.0f));
+			cameraNodeLeft.CreateComponent<Camera>();
+
+            // Camera
+            var cameraNodeRight = scene.CreateChild();
+            //cameraNode.Position = (new Vector3(0.0f, 0.0f, -10.0f)); // Point of view for our aircraft
+            cameraNodeRight.Position = (new Vector3(0.2f, 0.0f, -8.0f));
+            cameraNodeRight.CreateComponent<Camera>();
+
+
+            Renderer.NumViewports = 2;
+
+            var graphics = Graphics;
+            var rectLeft = new IntRect(0, 0, graphics.Width / 2, graphics.Height);
+            var rectRight = new IntRect(graphics.Width / 2, 0, graphics.Width, graphics.Height);
+
+			ViewportLeft = new Viewport(Context, scene, cameraNodeLeft.GetComponent<Camera>(), rectLeft, null);
+            ViewportRight = new Viewport(Context, scene, cameraNodeRight.GetComponent<Camera>(), rectRight, null);
+            ViewportRight.CullCamera = ViewportLeft.Camera;
 
 			if (Platform != Platforms.Android && Platform != Platforms.iOS)
 			{
-				RenderPath effectRenderPath = Viewport.RenderPath.Clone();
+				RenderPath effectRenderPath = ViewportLeft.RenderPath.Clone();
 				var fxaaRp = ResourceCache.GetXmlFile(Assets.PostProcess.FXAA3);
 				effectRenderPath.Append(fxaaRp);
-				Viewport.RenderPath = effectRenderPath;
+				ViewportLeft.RenderPath = effectRenderPath;
 			}
-			Renderer.SetViewport(0, Viewport);
+
+			Renderer.SetViewport(0, ViewportLeft);
+            Renderer.SetViewport(1, ViewportRight);
 
 			var zoneNode = scene.CreateChild();
 			var zone = zoneNode.CreateComponent<Zone>();
-			zone.SetBoundingBox(new BoundingBox(-300.0f, 300.0f));
+			zone.SetBoundingBox(new BoundingBox(-600.0f, 600.0f));
 			zone.AmbientColor = new Color(1f, 1f, 1f);
 			
 			// UI
@@ -128,7 +149,7 @@ namespace SamplyGame
 			var aircraftNode = scene.CreateChild(nameof(Aircraft));
 			aircraftNode.AddComponent(Player);
 			var playersLife = Player.Play();
-			Enemies enemies = new Enemies(Player);
+			var enemies = new Enemies(Player);
 			scene.AddComponent(enemies);
 			SpawnCoins();
 			enemies.StartSpawning();

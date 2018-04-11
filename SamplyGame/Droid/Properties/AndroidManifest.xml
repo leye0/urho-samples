@@ -1,5 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" package="SamplyGame.Droid" android:versionCode="1" android:versionName="1.0">
 	<uses-sdk android:minSdkVersion="15" />
+    <uses-feature android:name="android.hardware.camera.capability.manual_sensor" />
+    <uses-feature android:name="android.hardware.sensor.gyroscope" />
+    <uses-feature android:name="android.hardware.sensor.accelerometer" />
+    <uses-feature android:name="android.hardware.sensor.compass" />
 	<application android:label="Samply Game" android:icon="@drawable/Icon"></application>
 </manifest>
